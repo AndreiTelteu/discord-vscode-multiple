@@ -248,7 +248,7 @@ export default class Activity implements Disposable {
 		let workspaceName = null;
 		let workspaceFolder = null;
 		let fullDirname = null;
-		if (window.activeTextEditor) {
+		if (false && window.activeTextEditor) {
 			filename = basename(window.activeTextEditor.document.fileName);
 
 			const { dir } = parse(window.activeTextEditor.document.fileName);
@@ -275,6 +275,12 @@ export default class Activity implements Disposable {
 			const { totalLines, size, currentLine, currentColumn, gitbranch, gitreponame } = await this._generateFileDetails(
 				raw,
 			);
+			filename = '';
+			editors = window.visibleTextEditors
+				.filter(_ => _.document !== undefined)
+				.map(_ => { return _.document.fileName; })
+				.join(', ');
+			
 			raw = raw
 				.replace('{null}', empty)
 				.replace('{filename}', filename)
